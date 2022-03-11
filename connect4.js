@@ -10,26 +10,66 @@ class Game {
   constructor(height = 6, width = 7) {
     this.height = height,
     this.width = width,
-    this.board = [],
-    this.currPlayer = 1,
+    this.currPlayer = 0,
+    this.players = [];
     this.makeStartButton()
+    this.makeForm();
   }
 
   /**Manipulate DOM to add a start button with event listener */
   makeStartButton(){
-    console.log("makeStartButton")
-    const area = document.getElementById('header');
+    const header = document.getElementById('header');
     const button = document.createElement('button');
 
     button.setAttribute("id", "start-button");
     button.addEventListener("click", this.handleStartClick.bind(this));
     button.innerText = "Start Game";
 
-    area.append(button);
+    header.append(button);
   }
 
-  /** Process User input of start button and create game board */
+  /** Manipulate DOM to input form for players and favorite colors */
+  makeForm(){
+    const area = document.getElementById('header');
+
+    const form = document.createElement('form');
+    form.setAttribute("id", "player-form");
+    area.append(form);
+
+    const formArea = document.getElementById('player-form')
+    //P1 Name - Color P2 Name- Color
+    // i is number of players PLACEHOLDER potental change to support many players
+    for (let i = 1; i <= 2; i++){
+      const label = document.createElement('label');
+      const input = document.createElement('input');
+      const colorLabel = document.createElement('label');
+      const colorInput = document.createElement('input');
+
+      label.setAttribute("for", `Player-${i}`);
+      input.setAttribute("type", "text");
+      input.setAttribute("id", `Player-${i}`);
+      input.setAttribute("placeholder", `Player ${i}`);
+
+      colorLabel.setAttribute("for", `Player-${i}-color`);
+      colorInput.setAttribute("type", "text");
+      colorInput.setAttribute("id", `Player-${i}-color`);
+      colorInput.setAttribute("placeholder", `Favorite Color`);
+
+      formArea.append(label);
+      formArea.append(input);
+      formArea.append(colorInput)
+      formArea.append(colorLabel)
+    }
+  }
+
+  /** Process User input of start button and create game board
+   * clear game area and reset board if game is in session
+  */
   handleStartClick(evt){
+      const board = document.getElementById('board');
+      board.innerHTML = "";
+      this.board = [];
+
       this.makeBoard();
       this.makeHtmlBoard();
 
@@ -102,7 +142,9 @@ class Game {
 
   endGame(msg) {
     alert(msg);
+    let result = confirm("Play again?");
 
+    if (result) return this.handleStartClick()
   }
 
 
@@ -125,7 +167,7 @@ class Game {
     // check for win
     if (this.checkForWin()) {
 
-      return this.endGame(`Player ${this.currPlayer} won!`);
+      return this.endGame(`Player ${this.players[this.currPlayer]} won!`);
     }
 
     // check for tie
@@ -134,7 +176,7 @@ class Game {
     }
 
     // switch players
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    this.currPlayer = this.currPlayer === 0 ? 1 : 0;
   }
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -182,6 +224,7 @@ class Player {
   }
 
   getPlayerName(){
+
 
   }
 
