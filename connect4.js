@@ -5,21 +5,35 @@
  * board fills (tie)
  */
 
-const WIDTH = 7;
-const HEIGHT = 6;
+class Game {
+  constructor (height, width, board){
+    this.height = height,
+    this.width = width,
+    this.board = board
+  }
 
-let currPlayer = 1; // active player: 1 or 2
-let board = []; // array of rows, each row is array of cells  (board[y][x])
+    makeBoard(){
+      for (let y = 0; y < this.height; y++){
+        this.board.push(Array.from({ length: this.width}))
+      }
+    }
+
+
+
+};
+class Player {
+  constructor (playerName, color){
+    this.playerName = playerName,
+    this.color = color
+  };
+}
+
 
 /** makeBoard: create in-JS board structure:
  *   board = array of rows, each row is array of cells  (board[y][x])
  */
 
-function makeBoard() {
-  for (let y = 0; y < HEIGHT; y++) {
-    board.push(Array.from({ length: WIDTH }));
-  }
-}
+
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
@@ -97,17 +111,17 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   board[y][x] = currPlayer;
   placeInTable(y, x);
-  
+
   // check for win
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
   }
-  
+
   // check for tie
   if (board.every(row => row.every(cell => cell))) {
     return endGame('Tie!');
   }
-    
+
   // switch players
   currPlayer = currPlayer === 1 ? 2 : 1;
 }
