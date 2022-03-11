@@ -12,6 +12,8 @@ class Game {
       this.width = width,
       this.board = [],
       this.currPlayer = 1
+      this.makeBoard();
+      this.makeHtmlBoard();
   }
 
   /** makeBoard: create in-JS board structure:
