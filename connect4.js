@@ -12,11 +12,28 @@ class Game {
     this.width = width,
     this.board = [],
     this.currPlayer = 1,
-    this.makeBoard(),
-    this.makeHtmlBoard(),
-    this.gameOver = false
+    this.makeStartButton()
   }
 
+  /**Manipulate DOM to add a start button with event listener */
+  makeStartButton(){
+    console.log("makeStartButton")
+    const area = document.getElementById('header');
+    const button = document.createElement('button');
+
+    button.setAttribute("id", "start-button");
+    button.addEventListener("click", this.handleStartClick.bind(this));
+    button.innerText = "Start Game";
+
+    area.append(button);
+  }
+
+  /** Process User input of start button and create game board */
+  handleStartClick(evt){
+      this.makeBoard();
+      this.makeHtmlBoard();
+
+  }
   /** makeBoard: create in-JS board structure:
   *   board = array of rows, each row is array of cells  (board[y][x])
   */
@@ -25,7 +42,6 @@ class Game {
       this.board.push(Array.from({ length: this.width }));
     }
   }
-
 
   /** makeHtmlBoard: make HTML table and row of column tops. */
   makeHtmlBoard() {
@@ -58,6 +74,7 @@ class Game {
     }
   }
 
+
   /** findSpotForCol: given column x, return top empty y (null if filled) */
 
   findSpotForCol(x) {
@@ -85,7 +102,7 @@ class Game {
 
   endGame(msg) {
     alert(msg);
-    prompt("Would you like to play again?");
+
   }
 
 
@@ -122,10 +139,7 @@ class Game {
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
   checkForWin() {
-
-
-
-    let _win = (cells) => {
+    let _win = cells => {
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
@@ -159,5 +173,23 @@ class Game {
   }
 
 }; //Game Class Ends Here
+
+class Player {
+
+  constructor(name, color){
+    this.name = name
+    this.color = color
+  }
+
+  getPlayerName(){
+
+  }
+
+  getPlayerColor(){
+
+  }
+
+}
+
 
 new Game(6, 7);
